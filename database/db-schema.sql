@@ -3,8 +3,7 @@ CREATE TABLE "customers" (
     "name" VARCHAR(255) NOT NULL,
     "address" VARCHAR(255) NOT NULL,
     "city" VARCHAR(255) NOT NULL,
-    "country" VARCHAR(255) NOT NULL,
-    "phone_number" INT
+    "country" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "suppliers" (
@@ -23,8 +22,7 @@ CREATE TABLE "product_availability" (
     "product_id" BIGINT NOT NULL REFERENCES "products" ("id"),
     "supplier_id" BIGINT NOT NULL REFERENCES "suppliers" ("id"),
     "unit_price" DECIMAL NOT NULL,
-    "quantity_available" INTEGER NOT NULL CHECK (quantity_available >= 0),
-    PRIMARY KEY ("product_id", "supplier_id")
+    "quantity_available" INTEGER NOT NULL CHECK (quantity_available >= 0)
 );
 
 CREATE TABLE "orders" (
