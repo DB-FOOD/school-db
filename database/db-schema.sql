@@ -19,6 +19,7 @@ CREATE TABLE "products" (
 );
 
 CREATE TABLE "product_availability" (
+    "id" SERIAL PRIMARY KEY,
     "product_id" BIGINT NOT NULL REFERENCES "products" ("id"),
     "supplier_id" BIGINT NOT NULL REFERENCES "suppliers" ("id"),
     "unit_price" DECIMAL NOT NULL,
@@ -36,6 +37,6 @@ CREATE TABLE "orders" (
 CREATE TABLE "order_items" (
     "id" SERIAL PRIMARY KEY,
     "order_id" BIGINT NOT NULL REFERENCES "orders" ("id"),
-    "product_id" BIGINT NOT NULL REFERENCES "product_availability" ("product_id"),
+    "product_aval_id" BIGINT NOT NULL REFERENCES "product_availability" ("id"),
     "quantity" INTEGER NOT NULL CHECK (quantity >= 0)
 );
