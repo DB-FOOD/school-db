@@ -1,0 +1,37 @@
+.suppliers-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.suppliers-container h1 {
+  text-align: centre;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead th {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+td,
+th {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
