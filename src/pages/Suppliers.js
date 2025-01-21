@@ -7,7 +7,9 @@ const Suppliers = () => {
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const response = await fetch("http://localhost:3500/suppliers");
+        const response = await fetch(
+          "https://prod-db-b566.onrender.com/suppliers"
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

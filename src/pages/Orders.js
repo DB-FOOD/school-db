@@ -7,7 +7,9 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:3500/orders");
+        const response = await fetch(
+          "https://prod-db-b566.onrender.com/orders"
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
