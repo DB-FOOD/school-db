@@ -8,8 +8,6 @@ require("dotenv").config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
-const cors = require("cors");
-app.use(cors());
 
 app.use(express.json());
 
