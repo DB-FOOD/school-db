@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3500;
 
@@ -11,6 +12,8 @@ const pool = new Pool({
 
 app.use(express.json());
 
+app.use(cors());
+
 const connectToDB = async () => {
   try {
     const connection = await pool.connect();
@@ -20,6 +23,8 @@ const connectToDB = async () => {
     console.error("something went wrong", err);
   }
 };
+
+connectToDB();
 
 app.get("/", (req, res) => {
   res.send("Server is running!");
@@ -54,6 +59,5 @@ app.post("/customers", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  connectToDB();
+  console.log(`Server is running on ${PORT}`);
 });
