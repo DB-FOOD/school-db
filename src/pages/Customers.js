@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Customers.css";
 
-const path = process.env.REACT_APP_BE_PATH
+const path = process.env.REACT_APP_BE_PATH;
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -11,14 +11,12 @@ const Customers = () => {
     city: "",
     country: "",
   });
-  console.log(path)
+  console.log(path);
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await fetch(
-          `${path}/customers`
-        );
+        const response = await fetch(`${path}/customers`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -40,7 +38,7 @@ const Customers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3500/customers", {
+      const response = await fetch(`${path}/customers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
