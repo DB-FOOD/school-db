@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Customers.css";
 
+const path = process.env.REACT_APP_BE_PATH
+
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [formData, setFormData] = useState({
@@ -9,12 +11,13 @@ const Customers = () => {
     city: "",
     country: "",
   });
+  console.log(path)
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const response = await fetch(
-          "https://prod-db-b566.onrender.com/customers"
+          `${path}/customers`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,14 +40,11 @@ const Customers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://prod-db-b566.onrender.com/customers",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("http://localhost:3500/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

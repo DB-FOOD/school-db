@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Suppliers.css";
 
+const path = process.env.REACT_APP_BE_PATH;
+
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
 
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const response = await fetch(
-          "https://prod-db-b566.onrender.com/suppliers"
-        );
+        const response = await fetch(`${path}/suppliers`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
