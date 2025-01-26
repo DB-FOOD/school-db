@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Products.css";
 
+const path = process.env.REACT_APP_BE_PATH;
+
 const Products = () => {
   const [products, setProducts] = useState([]);
 
@@ -8,7 +10,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "https://prod-db-b566.onrender.com/products"
+          `${path}/products`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
