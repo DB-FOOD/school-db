@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Customers from "./pages/Customers";
 import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
@@ -13,16 +14,16 @@ const App = () => {
         <nav>
           <ul>
             <li>
-              <a href="/customers">Customers</a>
+              <Link to="/customers">Customers</Link>
             </li>
             <li>
-              <a href="/suppliers">Suppliers</a>
+              <Link to="/suppliers">Suppliers</Link>
             </li>
             <li>
-              <a href="/products">Products</a>
+              <Link to="/products">Products</Link>
             </li>
             <li>
-              <a href="/orders">Orders</a>
+              <Link to="/orders">Orders</Link>
             </li>
           </ul>
         </nav>
