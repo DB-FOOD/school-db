@@ -6,6 +6,7 @@ from table_incrementor import populate_subjects_table
 from table_incrementor import populate_school_year_table
 from table_incrementor import populate_half_term_table
 from table_incrementor import populate_modules_table
+from table_incrementor import populate_half_term_module_table
 
 output_dir = os.path.join(os.path.dirname(__file__), '..', 'seeds')
 os.makedirs(output_dir, exist_ok=True)
@@ -28,6 +29,7 @@ sql_content += '\n' + populate_school_year_table()
 sql_content += '\n' + populate_half_term_table()
 sql_content += '\n' + populate_subjects_table()
 sql_content += '\n' + populate_modules_table()
+sql_content += '\n' + populate_half_term_module_table(num_years=4)
 
 with open(file_path, "w") as f:
     f.write(sql_content)

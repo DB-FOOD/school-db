@@ -132,7 +132,7 @@ def populate_half_term_table():
     sql = 'BEGIN;\n'
 
     for year_id, num, start, end in half_terms:
-        sql += f'INSERT INTO "half-term" (start_date, end_date, number, year) VALUES (\'{start}\', \'{end}\', {num}, {year_id});\n'
+        sql += f'INSERT INTO "half_term" (start_date, end_date, number, year) VALUES (\'{start}\', \'{end}\', {num}, {year_id});\n'
 
     sql += 'COMMIT;\n'
     return sql
@@ -191,3 +191,46 @@ def populate_modules_table():
         subject_id += 1
     sql += 'COMMIT;\n'
     return sql
+
+def populate_half_term_module_table(num_years=4):
+    """
+    Populates the half_term_module table by distributing modules for each subject across the year.
+    """
+    with open('modules.json', 'r') as file:
+        modules = json.load(file)
+    
+    current_ht_id = 1
+    current_mod_id = 1
+
+    sql = 'BEGIN;\n'
+    for year in range(1, num_years + 1):
+        for subject, module_list in modules.items():
+            num_modules = len(module_list)
+            current_ht_id = (year - 1) * 6 + 1
+            if num_modules == 6:
+                for module_name in module_list:
+                    sql += f"INSERT INTO half_term_module (half_term, module) VALUES ({current_ht_id}, {current_mod_id});\n"
+                    current_ht_id +=1
+                    current_mod_id += 1
+            elif num_modules < 6:
+                span = 6 // num_modules
+                remainder = 6 % num_modules
+                ht_per_module = [span +1 if i < remainder else span for i in range(num_modules)]
+                for index, module_name in enumerate(module_list):
+                    for _ in range(ht_per_module[index]):
+                        sql += f"INSERT INTO half_term_module (half_term, module) VALUES ({current_ht_id}, {current_mod_id});\n"
+                        current_ht_id += 1
+                    current_mod_id += 1
+            else:
+                span = num_modules // 6
+                remainder = num_modules % 6
+                module_distribution = [span +1 if i < remainder else span for i in range(6)]
+                for count in module_distribution:
+                    for _ in range(count):
+                        sql += f"INSERT INTO half_term_module (half_term, module) VALUES ({current_ht_id}, {current_mod_id});\n"
+                        current_mod_id += 1
+                    current_ht_id += 1
+
+    sql += 'COMMIT;\n'
+    return sql
+

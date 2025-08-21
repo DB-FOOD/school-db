@@ -39,7 +39,7 @@ ALTER TABLE
     "subjects" ADD PRIMARY KEY("id");
 ALTER TABLE "subjects"
     ADD CONSTRAINT unique_subjects_name UNIQUE ("name");
-CREATE TABLE "half-term"(
+CREATE TABLE "half_term"(
     "id" bigserial NOT NULL,
     "start_date" DATE NOT NULL,
     "end_date" DATE NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE "half-term"(
     "year" BIGINT NOT NULL
 );
 ALTER TABLE
-    "half-term" ADD PRIMARY KEY("id");
+    "half_term" ADD PRIMARY KEY("id");
 CREATE TABLE "assignment"(
     "id" bigserial NOT NULL,
     "name" VARCHAR(255) NOT NULL,
@@ -121,7 +121,7 @@ ALTER TABLE
 ALTER TABLE
     "assignment" ADD CONSTRAINT "assignment_set_by_foreign" FOREIGN KEY("set_by") REFERENCES "people"("id");
 ALTER TABLE
-    "half_term_module" ADD CONSTRAINT "half_term_module_half_term_foreign" FOREIGN KEY("half_term") REFERENCES "half-term"("id");
+    "half_term_module" ADD CONSTRAINT "half_term_module_half_term_foreign" FOREIGN KEY("half_term") REFERENCES "half_term"("id");
 ALTER TABLE
     "attendance" ADD CONSTRAINT "attendance_person_foreign" FOREIGN KEY("person") REFERENCES "people"("id");
 ALTER TABLE
@@ -139,7 +139,7 @@ ALTER TABLE
 ALTER TABLE
     "studying_track" ADD CONSTRAINT "studying_track_assignment_foreign" FOREIGN KEY("assignment") REFERENCES "assignment"("id");
 ALTER TABLE
-    "half-term" ADD CONSTRAINT "half_term_year_foreign" FOREIGN KEY("year") REFERENCES "school_year"("id");
+    "half_term" ADD CONSTRAINT "half_term_year_foreign" FOREIGN KEY("year") REFERENCES "school_year"("id");
 ALTER TABLE
     "lessons" ADD CONSTRAINT "lessons_assignment_foreign" FOREIGN KEY("assignment") REFERENCES "assignment"("id");
 ALTER TABLE
