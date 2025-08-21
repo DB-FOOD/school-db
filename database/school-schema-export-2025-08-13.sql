@@ -19,8 +19,7 @@ CREATE TABLE "school_year"(
     "id" bigserial NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "start_date" DATE NOT NULL,
-    "end_date" DATE NOT NULL,
-    "half_term" BIGINT NOT NULL
+    "end_date" DATE NOT NULL
 );
 ALTER TABLE
     "school_year" ADD PRIMARY KEY("id");
@@ -32,12 +31,14 @@ CREATE TABLE "lessons"(
 );
 ALTER TABLE
     "lessons" ADD PRIMARY KEY("id");
-CREATE TABLE "subject"(
+CREATE TABLE "subjects"(
     "id" bigserial NOT NULL,
     "name" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
-    "subject" ADD PRIMARY KEY("id");
+    "subjects" ADD PRIMARY KEY("id");
+ALTER TABLE "subjects"
+    ADD CONSTRAINT unique_subjects_name UNIQUE ("name");
 CREATE TABLE "half-term"(
     "id" bigserial NOT NULL,
     "start_date" DATE NOT NULL,
@@ -79,13 +80,13 @@ ALTER TABLE
     "studying_track" ADD PRIMARY KEY("assignment");
 ALTER TABLE
     "studying_track" ADD PRIMARY KEY("student");
-CREATE TABLE "half_term_subject"(
+CREATE TABLE "half_term_module"(
     "id" bigserial NOT NULL,
     "half_term" BIGINT NOT NULL,
-    "subject" BIGINT NOT NULL
+    "module" BIGINT NOT NULL
 );
 ALTER TABLE
-    "half_term_subject" ADD PRIMARY KEY("id");
+    "half_term_module" ADD PRIMARY KEY("id");
 CREATE TABLE "role_appointments"(
     "id" bigserial NOT NULL,
     "role" BIGINT NOT NULL,
@@ -120,7 +121,7 @@ ALTER TABLE
 ALTER TABLE
     "assignment" ADD CONSTRAINT "assignment_set_by_foreign" FOREIGN KEY("set_by") REFERENCES "people"("id");
 ALTER TABLE
-    "half_term_subject" ADD CONSTRAINT "half_term_subject_half_term_foreign" FOREIGN KEY("half_term") REFERENCES "half-term"("id");
+    "half_term_module" ADD CONSTRAINT "half_term_module_half_term_foreign" FOREIGN KEY("half_term") REFERENCES "half-term"("id");
 ALTER TABLE
     "attendance" ADD CONSTRAINT "attendance_person_foreign" FOREIGN KEY("person") REFERENCES "people"("id");
 ALTER TABLE
@@ -144,6 +145,6 @@ ALTER TABLE
 ALTER TABLE
     "classes" ADD CONSTRAINT "classes_lesson_foreign" FOREIGN KEY("lesson") REFERENCES "lessons"("id");
 ALTER TABLE
-    "modules" ADD CONSTRAINT "modules_subject_foreign" FOREIGN KEY("subject") REFERENCES "subject"("id");
+    "modules" ADD CONSTRAINT "modules_subject_foreign" FOREIGN KEY("subject") REFERENCES "subjects"("id");
 ALTER TABLE
-    "half_term_subject" ADD CONSTRAINT "half_term_subject_subject_foreign" FOREIGN KEY("subject") REFERENCES "subject"("id");
+    "half_term_module" ADD CONSTRAINT "half_term_module_subject_foreign" FOREIGN KEY("module") REFERENCES "modules"("id");

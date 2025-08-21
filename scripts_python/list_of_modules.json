@@ -1,0 +1,187 @@
+{
+  "Mathematics": [
+    "Algebra",
+    "Geometry",
+    "Trigonometry",
+    "Calculus I",
+    "Calculus II",
+    "Probability & Statistics",
+    "Linear Algebra"
+  ],
+  "Physics": [
+    "Mechanics",
+    "Thermodynamics",
+    "Electricity & Magnetism",
+    "Optics",
+    "Quantum Physics",
+    "Nuclear Physics"
+  ],
+  "Chemistry": [
+    "Organic Chemistry",
+    "Inorganic Chemistry",
+    "Physical Chemistry",
+    "Analytical Chemistry",
+    "Biochemistry"
+  ],
+  "Biology": [
+    "Cell Biology",
+    "Genetics",
+    "Ecology",
+    "Evolutionary Biology",
+    "Human Anatomy",
+    "Physiology"
+  ],
+  "Science": [
+    "Scientific Method",
+    "Research Techniques",
+    "Environmental Science Basics",
+    "Interdisciplinary Science"
+  ],
+  "Computer Science": [
+    "Programming Fundamentals",
+    "Data Structures & Algorithms",
+    "Databases",
+    "Operating Systems",
+    "Computer Networks",
+    "Artificial Intelligence",
+    "Software Engineering"
+  ],
+  "History": [
+    "Ancient Civilizations",
+    "Medieval Europe",
+    "Renaissance & Enlightenment",
+    "Modern History",
+    "World Wars",
+    "Contemporary History"
+  ],
+  "Geography": [
+    "Physical Geography",
+    "Human Geography",
+    "Cartography",
+    "Environmental Geography",
+    "Urban Studies"
+  ],
+  "Literature": [
+    "Poetry Analysis",
+    "Shakespearean Literature",
+    "Modern Novels",
+    "Comparative Literature",
+    "Literary Theory"
+  ],
+  "English": [
+    "Grammar & Composition",
+    "Creative Writing",
+    "Public Speaking",
+    "English Literature",
+    "Technical Writing"
+  ],
+  "French": [
+    "Basic French Language",
+    "French Literature",
+    "French Culture & History",
+    "Advanced Conversation"
+  ],
+  "Spanish": [
+    "Basic Spanish Language",
+    "Spanish Literature",
+    "Latin American Studies",
+    "Advanced Spanish Conversation"
+  ],
+  "German": [
+    "Basic German Language",
+    "German Literature",
+    "German Culture & History",
+    "Advanced German Conversation"
+  ],
+  "Latin": [
+    "Classical Latin",
+    "Roman Literature",
+    "Roman History",
+    "Latin Prose & Poetry"
+  ],
+  "Art": [
+    "Drawing & Painting",
+    "Sculpture",
+    "Art History",
+    "Contemporary Art"
+  ],
+  "Music": [
+    "Music Theory",
+    "Classical Music History",
+    "Instrument Practice",
+    "Composition"
+  ],
+  "Physical Education": [
+    "Fitness Training",
+    "Team Sports",
+    "Individual Sports",
+    "Sports Science"
+  ],
+  "Economics": [
+    "Microeconomics",
+    "Macroeconomics",
+    "Game Theory",
+    "Econometrics",
+    "International Economics"
+  ],
+  "Philosophy": [
+    "Ancient Philosophy",
+    "Ethics",
+    "Logic",
+    "Modern Philosophy",
+    "Political Philosophy"
+  ],
+  "Political Science": [
+    "Comparative Politics",
+    "International Relations",
+    "Political Theory",
+    "Public Policy"
+  ],
+  "Psychology": [
+    "Developmental Psychology",
+    "Cognitive Psychology",
+    "Social Psychology",
+    "Clinical Psychology"
+  ],
+  "Sociology": [
+    "Social Theory",
+    "Research Methods",
+    "Sociology of Culture",
+    "Sociology of Education"
+  ],
+  "Environmental Science": [
+    "Ecology",
+    "Climate Change",
+    "Conservation Biology",
+    "Environmental Policy"
+  ],
+  "Drama": [
+    "Acting Techniques",
+    "Theatre History",
+    "Script Analysis",
+    "Stage Production"
+  ],
+  "Business Studies": [
+    "Principles of Management",
+    "Marketing",
+    "Accounting",
+    "Entrepreneurship"
+  ],
+  "Religious Studies": [
+    "World Religions",
+    "Theology",
+    "Ethics & Religion",
+    "Philosophy of Religion"
+  ],
+  "Civics": [
+    "Civic Education",
+    "Government Systems",
+    "Human Rights"
+  ],
+  "Design & Technology": [
+    "Product Design",
+    "Engineering Principles",
+    "Materials Science",
+    "Digital Design"
+  ]
+}

@@ -1,9 +1,11 @@
-from faker import Faker
-from datetime import datetime
 import os
 from table_incrementor import populate_roles_table
-
-fake = Faker()
+from table_incrementor import populate_people_table
+from table_incrementor import populate_role_appointments_table
+from table_incrementor import populate_subjects_table
+from table_incrementor import populate_school_year_table
+from table_incrementor import populate_half_term_table
+from table_incrementor import populate_modules_table
 
 output_dir = os.path.join(os.path.dirname(__file__), '..', 'seeds')
 os.makedirs(output_dir, exist_ok=True)
@@ -20,6 +22,17 @@ file_path = os.path.join(output_dir, file_name)
 
 roles = ['student', 'teacher', 'principal', 'admin_staff']
 sql_content = populate_roles_table(roles)
+sql_content += '\n' + populate_people_table(roles)
+sql_content += '\n' + populate_role_appointments_table()
+sql_content += '\n' + populate_school_year_table()
+sql_content += '\n' + populate_half_term_table()
+sql_content += '\n' + populate_subjects_table()
+sql_content += '\n' + populate_modules_table()
 
 with open(file_path, "w") as f:
     f.write(sql_content)
+
+# in case we would like to have a separate file for each table we will need to increent next_number before each table
+# next_number += 1
+# file_name_subjects = f'seed_{next_number}_subjects.sql'
+# file_path_subjects = os.path.join(output_dir, file_name_subjects)
