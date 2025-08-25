@@ -3,7 +3,7 @@ CREATE TABLE "people"(
     "first_name" VARCHAR(255) NOT NULL,
     "last_name" VARCHAR(255) NOT NULL,
     "date_of_birth" DATE NOT NULL,
-    "current_role" BIGINT NOT NULL,
+    "present_role" BIGINT NOT NULL,
     "login" VARCHAR(255) NULL
 );
 ALTER TABLE
@@ -25,8 +25,8 @@ ALTER TABLE
     "school_year" ADD PRIMARY KEY("id");
 CREATE TABLE "lessons"(
     "id" bigserial NOT NULL,
+    "number" INTEGER NOT NULL,
     "topic" VARCHAR(255) NOT NULL,
-    "assignment" BIGINT NOT NULL,
     "module" BIGINT NOT NULL
 );
 ALTER TABLE
@@ -48,16 +48,17 @@ CREATE TABLE "half_term"(
 );
 ALTER TABLE
     "half_term" ADD PRIMARY KEY("id");
-CREATE TABLE "assignment"(
+CREATE TABLE "assignments"(
     "id" bigserial NOT NULL,
+    "lesson" BIGINT NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "task" VARCHAR(255) NOT NULL,
-    "due_date" BIGINT NOT NULL,
+    "due_date" DATE NOT NULL,
     "set_by" BIGINT NOT NULL,
     "set_when" DATE NOT NULL
 );
 ALTER TABLE
-    "assignment" ADD PRIMARY KEY("id");
+    "assignments" ADD PRIMARY KEY("id");
 CREATE TABLE "modules"(
     "id" bigserial NOT NULL,
     "name" VARCHAR(255) NOT NULL,
@@ -72,14 +73,13 @@ CREATE TABLE "studying_track"(
     "started_when" DATE NOT NULL,
     "completed_when" DATE NOT NULL,
     "grade" VARCHAR(255) CHECK
-        ("grade" IN('')) NULL,
+        ("grade" IN('1', '2', '3', '4', '5', 'ACCEPTED', 'REJECTED')) NULL,
         "when_graded" DATE NULL,
         "who_graded" BIGINT NULL
 );
-ALTER TABLE
-    "studying_track" ADD PRIMARY KEY("assignment");
-ALTER TABLE
-    "studying_track" ADD PRIMARY KEY("student");
+ALTER TABLE "studying_track"
+  ADD PRIMARY KEY ("assignment", "student");
+
 CREATE TABLE "half_term_module"(
     "id" bigserial NOT NULL,
     "half_term" BIGINT NOT NULL,
@@ -93,15 +93,15 @@ CREATE TABLE "role_appointments"(
     "person" BIGINT NOT NULL,
     "date_appointed" DATE NOT NULL,
     "date_started" DATE NOT NULL,
-    "date_resigned" BIGINT NULL
+    "date_resigned" DATE NULL
 );
 ALTER TABLE
     "role_appointments" ADD PRIMARY KEY("id");
 CREATE TABLE "classes"(
     "id" bigserial NOT NULL,
     "lesson" BIGINT NOT NULL,
-    "time_started" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-    "time_ended" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+    "time_started" TIMESTAMP NOT NULL,
+    "time_ended" TIMESTAMP NOT NULL,
     "location" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
@@ -110,16 +110,14 @@ CREATE TABLE "attendance"(
     "class" BIGINT NOT NULL,
     "person" BIGINT NOT NULL,
     "role" BIGINT NOT NULL,
-    "time_arrived" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
+    "time_arrived" TIMESTAMP NOT NULL
 );
-ALTER TABLE
-    "attendance" ADD PRIMARY KEY("class");
-ALTER TABLE
-    "attendance" ADD PRIMARY KEY("person");
+ALTER TABLE "attendance"
+  ADD PRIMARY KEY ("class", "person");
 ALTER TABLE
     "studying_track" ADD CONSTRAINT "studying_track_student_foreign" FOREIGN KEY("student") REFERENCES "people"("id");
 ALTER TABLE
-    "assignment" ADD CONSTRAINT "assignment_set_by_foreign" FOREIGN KEY("set_by") REFERENCES "people"("id");
+    "assignments" ADD CONSTRAINT "assignments_set_by_foreign" FOREIGN KEY("set_by") REFERENCES "people"("id");
 ALTER TABLE
     "half_term_module" ADD CONSTRAINT "half_term_module_half_term_foreign" FOREIGN KEY("half_term") REFERENCES "half_term"("id");
 ALTER TABLE
@@ -128,6 +126,8 @@ ALTER TABLE
     "attendance" ADD CONSTRAINT "attendance_class_foreign" FOREIGN KEY("class") REFERENCES "classes"("id");
 ALTER TABLE
     "attendance" ADD CONSTRAINT "attendance_role_foreign" FOREIGN KEY("role") REFERENCES "roles"("id");
+ALTER TABLE 
+    "people" ADD CONSTRAINT "people_present_role_foreign" FOREIGN KEY ("present_role") REFERENCES "roles"("id");
 ALTER TABLE
     "role_appointments" ADD CONSTRAINT "role_appointments_role_foreign" FOREIGN KEY("role") REFERENCES "roles"("id");
 ALTER TABLE
@@ -137,11 +137,11 @@ ALTER TABLE
 ALTER TABLE
     "lessons" ADD CONSTRAINT "lessons_module_foreign" FOREIGN KEY("module") REFERENCES "modules"("id");
 ALTER TABLE
-    "studying_track" ADD CONSTRAINT "studying_track_assignment_foreign" FOREIGN KEY("assignment") REFERENCES "assignment"("id");
+    "studying_track" ADD CONSTRAINT "studying_track_assignment_foreign" FOREIGN KEY("assignment") REFERENCES "assignments"("id");
 ALTER TABLE
     "half_term" ADD CONSTRAINT "half_term_year_foreign" FOREIGN KEY("year") REFERENCES "school_year"("id");
 ALTER TABLE
-    "lessons" ADD CONSTRAINT "lessons_assignment_foreign" FOREIGN KEY("assignment") REFERENCES "assignment"("id");
+    "assignments" ADD CONSTRAINT "assignments_lesson_foreign" FOREIGN KEY("lesson") REFERENCES "lessons"("id");
 ALTER TABLE
     "classes" ADD CONSTRAINT "classes_lesson_foreign" FOREIGN KEY("lesson") REFERENCES "lessons"("id");
 ALTER TABLE
