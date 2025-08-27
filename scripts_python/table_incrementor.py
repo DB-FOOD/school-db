@@ -186,11 +186,9 @@ def populate_modules_table():
         modules = json.load(file)
 
     sql = 'BEGIN;\n'
-    subject_id = 1
     for subject, module_list in modules.items():
         for module in module_list:
-            sql += f"INSERT INTO modules (name, subject) VALUES ('{module}', {subject_id});\n"
-        subject_id += 1
+            sql += f"INSERT INTO modules (name, subject) SELECT '{module}', id FROM subjects where name='{subject}';\n"
     sql += 'COMMIT;\n'
     return sql
 
@@ -200,9 +198,6 @@ def populate_half_term_module_table(num_years=4):
     """
     with open(json_modules_path, 'r') as file:
         modules = json.load(file)
-    
-    current_ht_id = 1
-    current_mod_id = 1
 
     sql = 'BEGIN;\n'
     for year in range(1, num_years + 1):
@@ -210,29 +205,26 @@ def populate_half_term_module_table(num_years=4):
             num_modules = len(module_list)
             current_ht_id = (year - 1) * 6 + 1
             if num_modules == 6:
-                for module_name in module_list:
-                    sql += f"INSERT INTO half_term_module (half_term, module) VALUES ({current_ht_id}, {current_mod_id});\n"
-                    current_ht_id +=1
-                    current_mod_id += 1
+                for index, module_name in enumerate(module_list, start=1):
+                    sql += f"INSERT INTO half_term_module (half_term, module) VALUES ((SELECT id FROM half_term WHERE number={index} and year={year}), (SELECT id FROM modules WHERE name='{module_name}'));\n"
             elif num_modules < 6:
+                current_ht_number = 1
                 span = 6 // num_modules
                 remainder = 6 % num_modules
                 ht_per_module = [span +1 if i < remainder else span for i in range(num_modules)]
                 for index, module_name in enumerate(module_list):
                     for _ in range(ht_per_module[index]):
-                        sql += f"INSERT INTO half_term_module (half_term, module) VALUES ({current_ht_id}, {current_mod_id});\n"
-                        current_ht_id += 1
-                    current_mod_id += 1
+                        sql += f"INSERT INTO half_term_module (half_term, module) VALUES ((SELECT id FROM half_term WHERE number={current_ht_number} and year={year}), (SELECT id FROM modules WHERE name='{module_name}'));\n"
+                        current_ht_number += 1
             else:
                 span = num_modules // 6
                 remainder = num_modules % 6
                 module_distribution = [span +1 if i < remainder else span for i in range(6)]
-                for count in module_distribution:
+                module_iter = iter(module_list)
+                for index, count in enumerate(module_distribution):
                     for _ in range(count):
-                        sql += f"INSERT INTO half_term_module (half_term, module) VALUES ({current_ht_id}, {current_mod_id});\n"
-                        current_mod_id += 1
-                    current_ht_id += 1
-        current_mod_id = 1  # Reset for the next year
+                        module_name = next(module_iter)
+                        sql += f"INSERT INTO half_term_module (half_term, module) VALUES ((SELECT id FROM half_term WHERE number={index+1} and year={year}), (SELECT id FROM modules WHERE name='{module_name}'));\n"
     sql += 'COMMIT;\n'
     return sql
 
@@ -271,7 +263,6 @@ def populate_assignments_table():
     with open(json_modules_path, "r") as file:
         modules = json.load(file)
     lesson_list_global = []
-    global_lesson_id = 1
     task_list = [
         "Learn the theory",
         "Complete online exercises",
@@ -327,7 +318,6 @@ def populate_assignments_table():
     for year, study_days_list in study_days.items():
         for index, subject in enumerate(modules.keys(), start=1):
             if subject in excluded_subjects:
-                global_lesson_id += 117
                 continue
             pattern_number = (index - 1) % 5 + 1
             pattern_days = subject_patterns[pattern_number]
@@ -335,7 +325,6 @@ def populate_assignments_table():
             for lesson_num, set_when in enumerate(subject_study_days[:117], start=1):
                 lesson = {
                     "topic": f"{subject} - Lesson {lesson_num}",
-                    "lesson_id": global_lesson_id,
                     "subject_name": subject,
                     "name": f"Assignment for Lesson #{lesson_num} in {subject}",
                     "task": random.choice(task_list),
@@ -343,8 +332,6 @@ def populate_assignments_table():
                     "set_when": set_when
                 }
                 lesson_list_global.append(lesson)
-                global_lesson_id += 1
-        global_lesson_id = 1  # Reset for the next year
             
     for lesson in lesson_list_global[:]:
         if lesson["subject_name"] in ["German", "Psychology", "Religious Studies"]:
