@@ -9,6 +9,10 @@ fake = Faker()
 script_dir = os.path.dirname(os.path.abspath(__file__))
 json_modules_path = os.path.join(script_dir, 'list_of_modules.json')
 
+with open(json_modules_path, 'r') as file:
+        modules = json.load(file)
+
+
 half_terms = [
         (1, 1, date(2022, 9, 1), date(2022, 10, 21)),
         (1, 2, date(2022, 10, 31), date(2022, 12, 16)),
@@ -34,6 +38,29 @@ half_terms = [
         (4, 4, date(2026, 2, 23), date(2026, 4, 2)),
         (4, 5, date(2026, 4, 20), date(2026, 5, 22)),
         (4, 6, date(2026, 6, 1), date(2026, 7, 21))
+    ]
+
+duplicates_info = [
+        ["Mathematics", 47, date(2022, 12, 12)],
+        ["Physics", 45, date(2023, 1, 31)],
+        ["Chemistry", 57, date(2022, 12, 12)],
+        ["Biology", 38, date(2023, 1, 11)],
+        ["Science", 40, date(2023, 1, 21)],
+        ["Computer Science", 59, date(2023, 1, 25)],
+        ["History", 49, date(2023, 4, 21)],
+        ["Geography", 60, date(2023, 3, 26)],
+        ["Literature", 61, date(2023, 6, 3)],
+        ["English", 39, date(2023, 3, 15)],
+        ["French", 44, date(2023, 5, 13)],
+        ["Spanish", 42, date(2023, 5, 28)],
+        ["Latin", 55, date(2023, 6, 9)],
+        ["Art", 41, date(2023, 2, 19)],
+        ["Economics", 62, date(2023, 6, 16)],
+        ["Philosophy", 48, date(2023, 3, 14)],
+        ["Political Science", 52, date(2023, 6, 19)],
+        ["Sociology", 54, date(2023, 7, 3)],
+        ["Environmental Science", 51, date(2023, 5, 1)],
+        ["Design & Technology", 46, date(2023, 7, 6)],
     ]
 
 def populate_roles_table(roles):
@@ -80,7 +107,7 @@ def populate_people_table(roles):
 
 def populate_role_appointments_table():
     """
-    Populates the role_appointemnt table with random data.
+    Populates the role_appointments table with random data.
     """
     opening_date = date(2022, 8, 1)
     school_start = date(2022, 9, 1)
@@ -142,39 +169,9 @@ def populate_half_term_table():
 def populate_subjects_table():
     """
     Populates the subjects table with some examle subjects.
-    """
-    subjects = [
-    "Mathematics",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "Science",
-    "Computer Science",
-    "History",
-    "Geography",
-    "Literature",
-    "English",
-    "French",
-    "Spanish",
-    "German",
-    "Latin",
-    "Art",
-    "Music",
-    "Physical Education",
-    "Economics",
-    "Philosophy",
-    "Political Science",
-    "Psychology",
-    "Sociology",
-    "Environmental Science",
-    "Drama",
-    "Business Studies",
-    "Religious Studies",
-    "Civics",
-    "Design & Technology"
-    ]
+    """        
     sql = ''
-    for subject_name in subjects:
+    for subject_name in modules.keys():
         sql += f"INSERT INTO subjects (name) VALUES ('{subject_name}') ON CONFLICT (name) DO NOTHING;\n"
     return sql
 
@@ -182,9 +179,6 @@ def populate_modules_table():
     """
     Populates the modules table with data from json file.
     """
-    with open(json_modules_path, 'r') as file:
-        modules = json.load(file)
-
     sql = 'BEGIN;\n'
     for subject, module_list in modules.items():
         for module in module_list:
@@ -196,9 +190,6 @@ def populate_half_term_module_table(num_years=4):
     """
     Populates the half_term_module table by distributing modules for each subject across the year.
     """
-    with open(json_modules_path, 'r') as file:
-        modules = json.load(file)
-
     sql = 'BEGIN;\n'
     for year in range(1, num_years + 1):
         for subject, module_list in modules.items():
@@ -260,8 +251,7 @@ def populate_assignments_table():
     """
     Populates the assignments table with an assigment for each lesson.
     """
-    with open(json_modules_path, "r") as file:
-        modules = json.load(file)
+    
     lesson_list_global = []
     task_list = [
         "Learn the theory",
@@ -271,29 +261,6 @@ def populate_assignments_table():
         "Review the lecture notes"
     ]
     excluded_subjects = ["Physical Education", "Music", "Drama"]
-
-    duplicates_info = [
-        ["Mathematics", 47, date(2022, 12, 12)],
-        ["Physics", 45, date(2023, 1, 31)],
-        ["Chemistry", 57, date(2022, 12, 12)],
-        ["Biology", 38, date(2023, 1, 11)],
-        ["Science", 40, date(2023, 1, 21)],
-        ["Computer Science", 59, date(2023, 1, 25)],
-        ["History", 49, date(2023, 4, 21)],
-        ["Geography", 60, date(2023, 3, 26)],
-        ["Literature", 61, date(2023, 6, 3)],
-        ["English", 39, date(2023, 3, 15)],
-        ["French", 44, date(2023, 5, 13)],
-        ["Spanish", 42, date(2023, 5, 28)],
-        ["Latin", 55, date(2023, 6, 9)],
-        ["Art", 41, date(2023, 2, 19)],
-        ["Economics", 62, date(2023, 6, 16)],
-        ["Philosophy", 48, date(2023, 3, 14)],
-        ["Political Science", 52, date(2023, 6, 19)],
-        ["Sociology", 54, date(2023, 7, 3)],
-        ["Environmental Science", 51, date(2023, 5, 1)],
-        ["Design & Technology", 46, date(2023, 7, 6)],
-    ]
 
     def generate_study_days(half_terms):
         study_days = {}
@@ -352,5 +319,30 @@ def populate_assignments_table():
     for lesson in lesson_list_global:
         sql += f"INSERT INTO assignments (lesson, name, task, due_date, set_by, set_when) SELECT id, '{lesson['name']}', '{lesson['task']}', '{lesson['due_date']}', {lesson['set_by']}, '{lesson['set_when']}' FROM lessons WHERE topic = '{lesson['topic']}';\n"
             
+    sql += 'COMMIT;\n'
+    return sql
+
+def populate_studying_track_table():
+    """
+    Populates the studying_track table with students and their  assignments.
+    """
+    sql = 'BEGIN;\n'
+    #for student_id in range(63, 563) assigning all subjects assignments:
+    sql += f"INSERT INTO studying_track (student, assignment, assigned_when) SELECT s.id, a.id, a.set_when FROM generate_series(63, 562) AS s(id), assignments a WHERE a.set_by IN (13, 18, 19, 22, 32) AND a.set_when > (SELECT roleap.date_started FROM role_appointments roleap WHERE roleap.person = s.id);\n"
+    sql += f"INSERT INTO studying_track (student, assignment, assigned_when) SELECT s.id, a.id, a.set_when FROM generate_series(63, 562) AS s(id), assignments a, people p, role_appointments r WHERE p.id = s.id AND r.person = s.id AND a.set_by IN (17, 37, 34, 50, 23, 20) AND a.set_when > r.date_started AND p.date_of_birth > DATE '2011-01-01';\n"
+    sql += f"DELETE FROM studying_track st USING assignments a, generate_series(63, 562) AS s(id) WHERE st.assignment = a.id AND st.student = s.id AND (a.name ILIKE 'Political Science' OR a.name ILIKE 'Sociology');\n"
+    # for student_id in range(63, 229) assigning subjects by study groups:
+    sql += f"INSERT INTO studying_track (student, assignment, assigned_when) SELECT s.id, a.id, a.set_when FROM generate_series(63, 228) AS s(id), assignments a, people p, role_appointments r WHERE p.id = s.id AND r.person = s.id AND a.set_by IN (14, 37, 34, 50, 2, 53, 26, 30, 35) AND a.set_when > r.date_started AND p.date_of_birth < DATE '2011-01-01';\n"
+    sql += f"DELETE FROM studying_track st USING assignments a, generate_series(63, 228) AS s(id) WHERE st.student = s.id AND st.assignment = a.id AND (a.name ILIKE 'Political Science' OR a.name ILIKE 'Sociology');\n"
+    # for student_id in range(229, 395) assigning subjects by study groups:
+    sql += f"INSERT INTO studying_track (student, assignment, assigned_when) SELECT s.id, a.id, a.set_when FROM generate_series(229, 394) AS s(id), assignments a, people p, role_appointments r WHERE a.set_by IN (16, 26, 31, 33, 34, 35, 15, 58) AND p.id = s.id AND r.person = s.id AND a.set_when > r.date_started AND p.date_of_birth < DATE '2011-01-01';\n"
+    #for student_id in range(395, 563):
+    sql += f"INSERT INTO studying_track (student, assignment, assigned_when) SELECT s.id, a.id, a.set_when FROM generate_series(395, 562) AS s(id), assignments a, people p, role_appointments r WHERE a.set_by IN (21, 24, 25, 33, 34, 31, 2, 50, 58) AND p.id = s.id AND r.person = s.id AND a.set_when > r.date_started AND p.date_of_birth < DATE '2011-01-01';\n"
+    sql += f"DELETE FROM studying_track st USING assignments a, generate_series(229, 562) AS s(id) WHERE st.student = s.id AND st.assignment = a.id AND a.name ILIKE '%Sivics%';\n"
+    
+    for subject, teacher, start_date in duplicates_info:
+        # for student_id in range(315, 563) replacing assignments with other teachers
+        sql += f"DELETE FROM studying_track st USING assignments a1, generate_series(315, 563) AS s(id) WHERE st.student = s.id AND st.assignment = a1.id AND a1.name ILIKE '%{subject}%';\n"
+        sql += f"INSERT INTO studying_track (student, assignment, assigned_when) SELECT s.id, a.id, a.set_when FROM generate_series(315, 562) AS s(id), assignments a WHERE a.set_by = {teacher} AND a.set_when > DATE '{start_date}' AND a.name ILIKE '%{subject}%';\n"
     sql += 'COMMIT;\n'
     return sql

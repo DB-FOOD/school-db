@@ -1,15 +1,5 @@
 import os
 import table_incrementor
-# from table_incrementor import populate_roles_table
-# from table_incrementor import populate_people_table
-# from table_incrementor import populate_role_appointments_table
-# from table_incrementor import populate_subjects_table
-# from table_incrementor import populate_school_year_table
-# from table_incrementor import populate_half_term_table
-# from table_incrementor import populate_modules_table
-# from table_incrementor import populate_half_term_module_table
-# from table_incrementor import populate_lessons_table
-# from table_incrementor import populate_assignments_table
 
 output_dir = os.path.join(os.path.dirname(__file__), '..', 'seeds')
 os.makedirs(output_dir, exist_ok=True)
@@ -27,14 +17,15 @@ file_path = os.path.join(output_dir, file_name)
 roles = ['student', 'teacher', 'principal', 'admin_staff']
 sql_content = populate_roles_table(roles)
 sql_content += '\n' + table_incrementor.populate_people_table(roles)
-sql_content += '\n' + populate_role_appointments_table()
-sql_content += '\n' + populate_school_year_table()
-sql_content += '\n' + populate_half_term_table()
-sql_content += '\n' + populate_subjects_table()
-sql_content += '\n' + populate_modules_table()
-sql_content += '\n' + populate_half_term_module_table(num_years=4)
-sql_content += '\n' + populate_lessons_table()
-sql_content += '\n' + populate_assignments_table()
+sql_content += '\n' + table_incrementor.populate_role_appointments_table()
+sql_content += '\n' + table_incrementor.populate_school_year_table()
+sql_content += '\n' + table_incrementor.populate_half_term_table()
+sql_content += '\n' + table_incrementor.populate_subjects_table()
+sql_content += '\n' + table_incrementor.populate_modules_table()
+sql_content += '\n' + table_incrementor.populate_half_term_module_table(num_years=4)
+sql_content += '\n' + table_incrementor.populate_lessons_table()
+sql_content += '\n' + table_incrementor.populate_assignments_table()
+sql_content += '\n' + table_incrementor.populate_studying_track_table()
 
 with open(file_path, "w") as f:
     f.write(sql_content)
@@ -43,6 +34,4 @@ with open(file_path, "w") as f:
 # next_number += 1
 # file_name_subjects = f'seed_{next_number}_subjects.sql'
 # file_path_subjects = os.path.join(output_dir, file_name_subjects)
-
-# if __name__ == "__main__":
- run another 
+ 

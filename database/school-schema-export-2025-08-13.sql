@@ -70,8 +70,8 @@ CREATE TABLE "studying_track"(
     "assignment" BIGINT NOT NULL,
     "student" BIGINT NOT NULL,
     "assigned_when" DATE NOT NULL,
-    "started_when" DATE NOT NULL,
-    "completed_when" DATE NOT NULL,
+    "started_when" DATE,
+    "completed_when" DATE,
     "grade" VARCHAR(255) CHECK
         ("grade" IN('1', '2', '3', '4', '5', 'ACCEPTED', 'REJECTED')) NULL,
         "when_graded" DATE NULL,
